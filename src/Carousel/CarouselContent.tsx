@@ -1,4 +1,4 @@
-import React, { Children, useEffect } from 'react'
+import { Children, useEffect } from 'react';
 
 import { useCarouselStore } from './Provider'
 import useCarousel from './useCarousel'

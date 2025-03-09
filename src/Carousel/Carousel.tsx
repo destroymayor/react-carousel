@@ -1,5 +1,3 @@
-import React from 'react';
-
 import CarouselProvider from './Provider';
 import { CarouselState } from './store';
 import CarouselContent from './CarouselContent';
