@@ -1,18 +1,21 @@
-import React from 'react';
+import React from 'react'
 
-import { cn } from '@/lib/utils';
+import STYLE from './CarouselItem.module.css'
 
 type CarouselItemProps = {
-    children?: React.ReactNode;
-    className?: string;
-};
+  children?: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+}
 
 const CarouselItem = (props: CarouselItemProps) => {
-    const { children, className } = props;
+  const { children, className, style } = props
 
-    return (
-        <div className={cn('min-w-0 w-full h-full flex-[0_0_100%]', className)}>{children}</div>
-    );
-};
+  return (
+    <div className={[STYLE['wrapper'], className].join(' ')} style={style}>
+      {children}
+    </div>
+  )
+}
 
-export default CarouselItem;
+export default CarouselItem

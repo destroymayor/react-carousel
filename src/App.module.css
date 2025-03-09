@@ -1,0 +1,28 @@
+.carousel-container {
+  background-color: white;
+  width: 400px;
+}
+
+.carousel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 2rem;
+  color: black;
+  height: 200px;
+}
+
+.carousel-pagination-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 10px 0;
+}
+
+.carousel-actions-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}

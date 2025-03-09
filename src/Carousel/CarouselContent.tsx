@@ -1,86 +1,72 @@
-import React, { Children, useEffect } from 'react';
+import React, { Children, useEffect } from 'react'
 
-import { cn } from '@/lib/utils';
-import { useCarouselStore } from './Provider';
+import { useCarouselStore } from './Provider'
+import useCarousel from './useCarousel'
+import useSwipe from './useSwipe'
 
-import useCarousel from './useCarousel';
-import useSwipe from './useSwipe';
+import STYLE from './CarouselContent.module.css'
 
 type CarouselContentProps = {
-    children?: React.ReactNode;
-    className?: string;
-};
+  children?: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+}
 
 const CarouselContent = (props: CarouselContentProps) => {
-    const { children, className } = props;
+  const { children, className, style } = props
 
-    const {
-        swipeable,
-        isDragging,
-        isTransitioning,
-        activeSlide,
-        totalSlides,
-        orientation,
-        scrollNext,
-        scrollPrev,
-        setDragging,
-        setTotalSlides,
-    } = useCarouselStore((state) => state);
+  const { swipeable, isDragging, isTransitioning, activeSlide, totalSlides, orientation, scrollNext, scrollPrev, setDragging, setTotalSlides } = useCarouselStore((state) => state)
 
-    useCarousel();
+  useCarousel()
 
-    const {
-        ref: carouselRef,
-        swipeingTranslate,
-        handlers: swipeHandlers,
-    } = useSwipe({
-        orientation,
-        enabled: swipeable,
-        isDragging,
-        setDragging,
-        onSwipeLeft: () => scrollPrev(),
-        onSwipeRight: () => scrollNext(),
-    });
+  const {
+    ref: carouselRef,
+    swipeingTranslate,
+    handlers: swipeHandlers,
+  } = useSwipe({
+    direction: orientation,
+    enabled: swipeable,
+    isDragging,
+    setDragging,
+    onSwipeLeft: () => scrollPrev(),
+    onSwipeRight: () => scrollNext(),
+  })
 
-    useEffect(() => setTotalSlides(Children.toArray(children).length), []);
+  useEffect(() => setTotalSlides(Children.toArray(children).length), [])
 
-    const clonedFirstChild = Children.toArray(children)[0];
-    const clonedLastChild = Children.toArray(children)[totalSlides - 1];
+  const clonedFirstChild = Children.toArray(children)[0]
+  const clonedLastChild = Children.toArray(children)[totalSlides - 1]
 
-    const isHorizontal = orientation === 'horizontal';
+  const isHorizontal = orientation === 'horizontal'
 
-    const transform = isHorizontal
-        ? `translateX(${-activeSlide * 100}%) translateX(${swipeingTranslate}px)`
-        : `translateY(${-activeSlide* 100}%) translateY(${swipeingTranslate}px)`;
+  const transform = isHorizontal ? `translateX(${-activeSlide * 100}%) translateX(${swipeingTranslate}px)` : `translateY(${-activeSlide * 100}%) translateY(${swipeingTranslate}px)`
 
-    return (
-        <div className="overflow-hidden">
-            <div
-                ref={carouselRef}
-                className={cn(
-                    'touch-none',
-                    'flex h-full w-full',
-                    isHorizontal ? 'flex-row' : 'flex-col',
-                    {
-                        'transition-transform duration-300 ease-out': !isTransitioning,
-                    },
-                    className
-                )}
-                style={
-                    {
-                        transform,
-                        height: carouselRef.current?.clientHeight,
-                        width: carouselRef.current?.clientWidth,
-                    } as React.CSSProperties
-                }
-                {...swipeHandlers}
-            >
-                {clonedLastChild}
-                {children}
-                {clonedFirstChild}
-            </div>
-        </div>
-    );
-};
+  return (
+    <div className={STYLE.wrapper}>
+      <div
+        ref={carouselRef}
+        className={[
+          STYLE['wrapper-inner'],
+          isHorizontal ? STYLE['wrapper-inner-horizontal'] : STYLE['wrapper-inner-vertical'],
+          !isTransitioning ? STYLE['wrapper-inner-transition'] : '',
+          className,
+        ].join(' ')}
+        style={
+          {
+            transform,
+            height: carouselRef.current?.clientHeight,
+            width: carouselRef.current?.clientWidth,
+            ...style,
+          } as React.CSSProperties
+        }
+        {...swipeHandlers}
+      >
+        {clonedLastChild}
+        {children}
+        {clonedFirstChild}
+      </div>
+    </div>
+  )
+}
 
-export default CarouselContent;
+export default CarouselContent

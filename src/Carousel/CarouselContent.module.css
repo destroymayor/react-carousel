@@ -1,0 +1,26 @@
+.wrapper {
+  overflow: hidden;
+}
+
+.wrapper-inner {
+  touch-action: none;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.wrapper-inner-vertical {
+  flex-direction: column;
+}
+
+.wrapper-inner-horizontal {
+  flex-direction: row;
+}
+
+.wrapper-inner-transition {
+  transition-property: transform;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+

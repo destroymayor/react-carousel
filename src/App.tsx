@@ -1,46 +1,46 @@
-import Carousel from './Carousel';
-import { cn } from './lib/utils';
+import Carousel from './Carousel'
+
+import STYLE from './App.module.css'
 
 const data = [
   {
     title: '1',
-    bg: 'bg-purple-300',
+    bg: 'purple',
   },
   {
     title: '2',
-    bg: 'bg-amber-300',
+    bg: 'yellow',
   },
   {
     title: '3',
-    bg: 'bg-blue-300',
+    bg: 'blue',
   },
   {
     title: '4',
-    bg: 'bg-green-300',
+    bg: 'green',
   },
   {
     title: '5',
-    bg: 'bg-yellow-600',
+    bg: 'black',
   },
 ]
 
 function App() {
-
   return (
-    <div className="bg-white">
-      <Carousel className="w-[400px]">
+    <>
+      <Carousel className={STYLE['carousel-container']}>
         <Carousel.Content>
           {data.map((item) => (
-            <Carousel.Item key={item.title} className={cn(item.bg, 'flex h-[200px] items-center justify-center text-2xl text-black')}>
+            <Carousel.Item key={item.title} className={STYLE['carousel-item']} style={{ backgroundColor: item.bg }}>
               {item.title}
             </Carousel.Item>
           ))}
         </Carousel.Content>
-        <div className="flex flex-col py-4 gap-4">
+        <div className={STYLE['carousel-pagination-container']}>
           <Carousel.Bars />
           <Carousel.Pagination />
         </div>
-        <div className="flex justify-between gap-4">
+        <div className={STYLE['carousel-actions-container']}>
           <Carousel.Previous>
             <button>{`<`}</button>
           </Carousel.Previous>
@@ -49,7 +49,7 @@ function App() {
           </Carousel.Next>
         </div>
       </Carousel>
-    </div>
+    </>
   )
 }
 

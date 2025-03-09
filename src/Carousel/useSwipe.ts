@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 
 type UseSwipeProps = {
-    orientation: 'horizontal' | 'vertical';
+    direction: 'horizontal' | 'vertical';
     enabled: boolean;
     isDragging: boolean;
     setDragging: (dragging: boolean) => void;
@@ -13,13 +13,11 @@ type SwipeMouseEvent = MouseEvent | React.MouseEvent;
 type SwipeTouchEvent = TouchEvent | React.TouchEvent;
 
 const useSwipe = (props: UseSwipeProps) => {
-    const { enabled, orientation, isDragging, setDragging, onSwipeLeft, onSwipeRight } =
-        props;
+    const { enabled, direction, isDragging, setDragging, onSwipeLeft, onSwipeRight } = props
     const ref = useRef<HTMLDivElement>(null);
     const [swipeingTranslate, setSwipeingTranslate] = useState(0);
     const [startX, setStartX] = useState(0);
     const [startY, setStartY] = useState(0);
-    const [direction, setDirection] = useState<'left' | 'right' | null>(null);
 
     const handleTouchStart = (e: SwipeTouchEvent | SwipeMouseEvent) => {
         if (!enabled) {
@@ -43,11 +41,7 @@ const useSwipe = (props: UseSwipeProps) => {
         const offsetX = touch.clientX - startX;
         const offsetY = touch.clientY - startY;
 
-        if (Math.abs(offsetX) > Math.abs(offsetY)) {
-            setDirection(offsetX > 0 ? 'right' : 'left');
-        }
-
-        if (orientation === 'horizontal') {
+        if (direction === 'horizontal') {
             setSwipeingTranslate(offsetX);
         } else {
             setSwipeingTranslate(offsetY);
@@ -61,7 +55,7 @@ const useSwipe = (props: UseSwipeProps) => {
 
         setDragging(false);
 
-        if (orientation === 'horizontal') {
+        if (direction === 'horizontal') {
             if (swipeingTranslate > 100) {
                 onSwipeLeft();
             } else if (swipeingTranslate < -100) {

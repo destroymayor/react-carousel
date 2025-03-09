@@ -6,7 +6,7 @@ type CarouselTimerProps = {
 };
 
 const useCarouselTimer = ({ callback, duration }: CarouselTimerProps) => {
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const callbackRef = useRef(callback);
 
     useEffect(() => {
