@@ -7,6 +7,7 @@
   display: flex;
   height: 100%;
   width: 100%;
+  gap: 10px;
 }
 
 .wrapper-inner-vertical {
@@ -20,7 +21,7 @@
 .wrapper-inner-transition {
   transition-property: transform;
   transition-duration: 300ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-timing-function: ease-in-out;
 }
 
 

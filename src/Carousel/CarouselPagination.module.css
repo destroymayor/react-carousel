@@ -13,9 +13,7 @@
   border-radius: 100%;
   border-style: none;
   background-color: #52525c;
-  transition-property: background-color;
-  transition-duration: 300ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 300ms ease-in-out, scale 300ms ease-in-out;
   scale: 0.5;
 }
 

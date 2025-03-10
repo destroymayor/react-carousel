@@ -10,10 +10,19 @@ type CarouselContentProps = {
   children?: React.ReactNode
   className?: string
   style?: React.CSSProperties
+  gap?: number
+}
+
+const calculateTranslateX = (data: { containerWidth: number; slideWidth: number; activeSlide: number; gap: number }) => {
+  const { containerWidth, activeSlide, slideWidth, gap } = data
+  const baseOffset = (containerWidth - slideWidth) / 2
+  const itemGap = activeSlide * gap
+
+  return baseOffset - itemGap - slideWidth * activeSlide
 }
 
 const CarouselContent = (props: CarouselContentProps) => {
-  const { children, className, style } = props
+  const { children, className, style, gap = 0 } = props
 
   const { swipeable, isDragging, isTransitioning, activeSlide, totalSlides, orientation, scrollNext, scrollPrev, setDragging, setTotalSlides } = useCarouselStore((state) => state)
 
@@ -38,8 +47,13 @@ const CarouselContent = (props: CarouselContentProps) => {
   const clonedLastChild = Children.toArray(children)[totalSlides - 1]
 
   const isHorizontal = orientation === 'horizontal'
+  const containerWidth = carouselRef.current?.offsetWidth || 0;
+  const slideWidth = carouselRef.current?.children[0].clientWidth || 0
 
-  const transform = isHorizontal ? `translateX(${-activeSlide * 100}%) translateX(${swipeingTranslate}px)` : `translateY(${-activeSlide * 100}%) translateY(${swipeingTranslate}px)`
+  const translateValue = calculateTranslateX({ containerWidth, slideWidth, activeSlide, gap });
+  const transform = isHorizontal
+    ? `translateX(${translateValue}px) translateX(${swipeingTranslate}px)`
+    : `translateY(${translateValue}%) translateY(${swipeingTranslate}px)`
 
   return (
     <div className={STYLE.wrapper}>
@@ -54,8 +68,9 @@ const CarouselContent = (props: CarouselContentProps) => {
         style={
           {
             transform,
+            gap,
             height: carouselRef.current?.clientHeight,
-            width: carouselRef.current?.clientWidth,
+            width: carouselRef.current?.offsetWidth,
             ...style,
           } as React.CSSProperties
         }

@@ -11,10 +11,11 @@ type CarouselStoreProviderProps = {
     className?: string;
     orientation?: CarouselState['orientation'];
     swipeable?: CarouselState['swipeable'];
+    options?: CarouselState['options'];
 };
 
 const CarouselStoreProvider = (props: CarouselStoreProviderProps) => {
-    const { children, className } = props;
+    const { children, className } = props
 
     return (
         <CarouselProvider initialState={{ ...props }}>
