@@ -13,7 +13,8 @@ type SwipeMouseEvent = MouseEvent | React.MouseEvent;
 type SwipeTouchEvent = TouchEvent | React.TouchEvent;
 
 const useSwipe = (props: UseSwipeProps) => {
-    const { enabled, direction, isDragging, setDragging, onSwipeLeft, onSwipeRight } = props
+    const { enabled, direction, isDragging, setDragging, onSwipeLeft, onSwipeRight } =
+        props;
     const ref = useRef<HTMLDivElement>(null);
     const [swipeingTranslate, setSwipeingTranslate] = useState(0);
     const [startX, setStartX] = useState(0);

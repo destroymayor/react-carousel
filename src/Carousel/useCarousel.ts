@@ -22,9 +22,9 @@ const useCarousel = () => {
     const { speed } = options;
 
     const { resetTimer, clearTimer } = useCarouselTimer({
-      callback: scrollNext,
-      speed,
-    })
+        callback: scrollNext,
+        speed,
+    });
 
     useEffect(() => {
         if (isTransitioning) return;
@@ -51,7 +51,6 @@ const useCarousel = () => {
     }, [activeSlide, totalSlides]);
 
     useEffect(() => {
-
         if (isPlaying && !isDragging && !isTransitioning) {
             resetTimer();
         }

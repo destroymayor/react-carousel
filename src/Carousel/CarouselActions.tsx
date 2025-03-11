@@ -6,7 +6,9 @@ type CarouselActionProps = {
 
 export const CarouselNext = (props: CarouselActionProps) => {
     const { children } = props;
-    const { isTransitioning, scrollNext, pauseSlide } = useCarouselStore((state) => state);
+    const { isTransitioning, scrollNext, pauseSlide } = useCarouselStore(
+        (state) => state
+    );
 
     const handleClick = () => {
         if (isTransitioning) return;
@@ -20,7 +22,9 @@ export const CarouselNext = (props: CarouselActionProps) => {
 
 export const CarouselPrevious = (props: CarouselActionProps) => {
     const { children } = props;
-    const { isTransitioning, scrollPrev, pauseSlide } = useCarouselStore((state) => state);
+    const { isTransitioning, scrollPrev, pauseSlide } = useCarouselStore(
+        (state) => state
+    );
 
     const handleClick = () => {
         if (isTransitioning) return;
