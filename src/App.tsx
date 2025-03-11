@@ -34,20 +34,7 @@ function App() {
     return (
         <div className={STYLE.wrapper}>
             <Carousel className={STYLE['carousel-container']}>
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '40%',
-                        left: '50%',
-                        width: '10px',
-                        height: '10px',
-                        backgroundColor: 'red',
-                        transform: 'translate(-50%, -50%)',
-                        zIndex: 1000,
-                    }}
-                ></div>
-
-                <Carousel.Content>
+                <Carousel.Content gap={10}>
                     {data.map((item) => (
                         <Carousel.Item
                             key={item.title}
@@ -60,7 +47,6 @@ function App() {
                     ))}
                 </Carousel.Content>
                 <div className={STYLE['carousel-pagination-container']}>
-                    <Carousel.Bars />
                     <Carousel.Pagination />
                 </div>
                 <div className={STYLE['carousel-actions-container']}>
@@ -70,28 +56,41 @@ function App() {
                     <Carousel.Next>
                         <button>{`>`}</button>
                     </Carousel.Next>
+                    <Carousel.Toggle></Carousel.Toggle>
                 </div>
             </Carousel>
-            {/* <Carousel className={STYLE['carousel-container']}>
-        <Carousel.Content>
-          {data.map((item) => (
-            <Carousel.Item key={item.title} className={STYLE['carousel-item']}>
-              <img src={item.img} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </Carousel.Item>
-          ))}
-        </Carousel.Content>
-        <div className={STYLE['carousel-pagination-container']}>
-          <Carousel.Pagination />
-        </div>
-        <div className={STYLE['carousel-actions-container']}>
-          <Carousel.Previous>
-            <button>{`<`}</button>
-          </Carousel.Previous>
-          <Carousel.Next>
-            <button>{`>`}</button>
-          </Carousel.Next>
-        </div>
-      </Carousel> */}
+
+            <Carousel
+                className={STYLE['carousel-container-vertical']}
+                orientation="vertical"
+            >
+                <Carousel.Content gap={10}>
+                    {data.map((item) => (
+                        <Carousel.Item
+                            key={item.title}
+                            width={100}
+                            className={STYLE['carousel-item']}
+                            style={{
+                                backgroundColor: item.bg,
+                            }}
+                        >
+                            {item.title}
+                        </Carousel.Item>
+                    ))}
+                </Carousel.Content>
+                <div className={STYLE['carousel-pagination-container']}>
+                    <Carousel.Pagination />
+                </div>
+                <div className={STYLE['carousel-actions-container']}>
+                    <Carousel.Previous>
+                        <button>{`<`}</button>
+                    </Carousel.Previous>
+                    <Carousel.Next>
+                        <button>{`>`}</button>
+                    </Carousel.Next>
+                    <Carousel.Toggle></Carousel.Toggle>
+                </div>
+            </Carousel>
         </div>
     );
 }

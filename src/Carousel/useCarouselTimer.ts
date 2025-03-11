@@ -20,6 +20,10 @@ const useCarouselTimer = ({ callback, speed }: CarouselTimerProps) => {
         }
     };
 
+    const pauseTimer = () => {
+        clearTimer();
+    };
+
     const startTimer = () => {
         clearTimer();
 
@@ -33,7 +37,7 @@ const useCarouselTimer = ({ callback, speed }: CarouselTimerProps) => {
         startTimer();
     };
 
-    return { clearTimer, startTimer, resetTimer };
+    return { clearTimer, startTimer, resetTimer, pauseTimer };
 };
 
 export default useCarouselTimer;

@@ -1,4 +1,4 @@
-import { Children, useEffect } from 'react';
+import { Children, useLayoutEffect } from 'react';
 
 import { useCarouselStore } from './Provider';
 import useCarousel from './useCarousel';
@@ -14,16 +14,18 @@ type CarouselContentProps = {
 };
 
 const calculateTranslateX = (data: {
-    containerWidth: number;
-    slideWidth: number;
+    containerSize?: number;
+    slideSize: number;
     activeSlide: number;
     gap: number;
 }) => {
-    const { containerWidth, activeSlide, slideWidth, gap } = data;
-    const baseOffset = (containerWidth - slideWidth) / 2;
+    const { containerSize, activeSlide, slideSize, gap } = data;
     const itemGap = activeSlide * gap;
 
-    return baseOffset - itemGap - slideWidth * activeSlide;
+    if (!containerSize) return `-${activeSlide * 100}%`;
+    const baseOffset = (containerSize - slideSize) / 2;
+
+    return `${baseOffset - itemGap - slideSize * activeSlide}px`;
 };
 
 const CarouselContent = (props: CarouselContentProps) => {
@@ -42,7 +44,7 @@ const CarouselContent = (props: CarouselContentProps) => {
         setTotalSlides,
     } = useCarouselStore((state) => state);
 
-    useCarousel();
+    const { containerRef } = useCarousel();
 
     const {
         ref: carouselRef,
@@ -57,27 +59,33 @@ const CarouselContent = (props: CarouselContentProps) => {
         onSwipeRight: () => scrollNext(),
     });
 
-    useEffect(() => setTotalSlides(Children.toArray(children).length), []);
+    useLayoutEffect(() => {
+        setTotalSlides(Children.count(children));
+    }, [children]);
+
+    const carouselRoot = carouselRef.current?.parentNode?.parentElement;
+    const slideWidth = carouselRef.current?.children[0].clientWidth || 0;
+    const slideHeight = carouselRef.current?.children[0].clientHeight || 0;
+
+    const isHorizontal = orientation === 'horizontal';
+    const translateValue = calculateTranslateX({
+        containerSize: isHorizontal
+            ? carouselRoot?.offsetWidth
+            : carouselRoot?.offsetHeight,
+        slideSize: isHorizontal ? slideWidth : slideHeight,
+        activeSlide,
+        gap,
+    });
+
+    const transform = isHorizontal
+        ? `translateX(${translateValue}) translateX(${swipeingTranslate}px)`
+        : `translateY(${translateValue}) translateY(${swipeingTranslate}px)`;
 
     const clonedFirstChild = Children.toArray(children)[0];
     const clonedLastChild = Children.toArray(children)[totalSlides - 1];
 
-    const isHorizontal = orientation === 'horizontal';
-    const containerWidth = carouselRef.current?.offsetWidth || 0;
-    const slideWidth = carouselRef.current?.children[0].clientWidth || 0;
-
-    const translateValue = calculateTranslateX({
-        containerWidth,
-        slideWidth,
-        activeSlide,
-        gap,
-    });
-    const transform = isHorizontal
-        ? `translateX(${translateValue}px) translateX(${swipeingTranslate}px)`
-        : `translateY(${translateValue}%) translateY(${swipeingTranslate}px)`;
-
     return (
-        <div className={STYLE.wrapper}>
+        <div className={STYLE.wrapper} ref={containerRef}>
             <div
                 ref={carouselRef}
                 className={[
@@ -85,15 +93,16 @@ const CarouselContent = (props: CarouselContentProps) => {
                     isHorizontal
                         ? STYLE['wrapper-inner-horizontal']
                         : STYLE['wrapper-inner-vertical'],
-                    !isTransitioning ? STYLE['wrapper-inner-transition'] : '',
+                    !isTransitioning ? STYLE['carousel-transition'] : '',
                     className,
                 ].join(' ')}
                 style={
                     {
                         transform,
                         gap,
-                        height: carouselRef.current?.clientHeight,
-                        width: carouselRef.current?.offsetWidth,
+                        ...(isHorizontal
+                            ? { width: carouselRoot?.offsetWidth }
+                            : { height: carouselRoot?.offsetHeight }),
                         ...style,
                     } as React.CSSProperties
                 }

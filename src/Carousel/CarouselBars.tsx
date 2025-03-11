@@ -29,8 +29,7 @@ const CarouselBar = (props: CarouselBarProps) => {
 
 const CarouselBars = (props: { className?: string }) => {
     const { className } = props;
-    const { activeSlide, options, totalSlides } = useCarouselStore((state) => state);
-    const { speed } = options;
+    const { activeSlide, speed, totalSlides } = useCarouselStore((state) => state);
 
     const activeBar = activeSlide - 1;
 

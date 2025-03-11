@@ -3,28 +3,49 @@ import { useCarouselStore } from './Provider';
 import useCarouselTimer from './useCarouselTimer';
 import { resetTransition } from './utils';
 
+import useIntersectionObserver from './useIntersectionObserver';
+
 const useCarousel = () => {
     const state = useCarouselStore((carouselState) => carouselState);
 
     const {
         isPlaying,
+        isActing,
         isDragging,
         isTransitioning,
         totalSlides,
         activeSlide,
-        options,
+        speed,
+        autoPlay,
         transitionDuration,
         scrollNext,
         playSlide,
+        pauseSlide,
         setActiveSlide,
         setTransitioning,
+        setAutoPlay,
+        setActing,
     } = state;
-    const { speed } = options;
 
-    const { resetTimer, clearTimer } = useCarouselTimer({
+    const { resetTimer, pauseTimer } = useCarouselTimer({
         callback: scrollNext,
         speed,
     });
+
+    const { containerRef, isIntersecting } = useIntersectionObserver({
+        dependencies: [autoPlay],
+        options: { threshold: 0.5 },
+    });
+
+    useEffect(() => {
+        if (isIntersecting) {
+            setAutoPlay(true);
+            playSlide();
+        } else {
+            setAutoPlay(false);
+            pauseSlide();
+        }
+    }, [isIntersecting]);
 
     useEffect(() => {
         if (isTransitioning) return;
@@ -51,15 +72,24 @@ const useCarousel = () => {
     }, [activeSlide, totalSlides]);
 
     useEffect(() => {
-        if (isPlaying && !isDragging && !isTransitioning) {
-            resetTimer();
+        if (isActing) {
+            pauseTimer();
+            setActing(false);
+            return;
         }
 
-        if (!isPlaying) {
-            clearTimer();
+        if (!autoPlay) {
+            pauseTimer();
             playSlide();
+            return;
         }
-    }, [isDragging, isTransitioning, isPlaying]);
+
+        if (autoPlay && isPlaying && !isDragging && !isTransitioning) {
+            resetTimer();
+        }
+    }, [isActing, autoPlay, isDragging, isTransitioning, isPlaying]);
+
+    return { containerRef };
 };
 
 export default useCarousel;

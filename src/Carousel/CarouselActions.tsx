@@ -1,19 +1,18 @@
 import { useCarouselStore } from './Provider';
 
 type CarouselActionProps = {
-    children: React.ReactNode;
+    children?: React.ReactNode;
 };
 
 export const CarouselNext = (props: CarouselActionProps) => {
     const { children } = props;
-    const { isTransitioning, scrollNext, pauseSlide } = useCarouselStore(
+    const { isTransitioning, scrollNext } = useCarouselStore(
         (state) => state
     );
 
     const handleClick = () => {
         if (isTransitioning) return;
 
-        pauseSlide();
         scrollNext();
     };
 
@@ -22,16 +21,26 @@ export const CarouselNext = (props: CarouselActionProps) => {
 
 export const CarouselPrevious = (props: CarouselActionProps) => {
     const { children } = props;
-    const { isTransitioning, scrollPrev, pauseSlide } = useCarouselStore(
+    const { isTransitioning, scrollPrev } = useCarouselStore(
         (state) => state
     );
 
     const handleClick = () => {
         if (isTransitioning) return;
 
-        pauseSlide();
         scrollPrev();
     };
 
     return <div onClick={handleClick}>{children}</div>;
+};
+
+export const CarouselToggle = (props: CarouselActionProps) => {
+    const { children } = props;
+    const { autoPlay, toggleAutoPlay } = useCarouselStore((state) => state);
+
+    return (
+        <button onClick={toggleAutoPlay}>
+            {autoPlay ? 'Pause' : 'Play'} {children}
+        </button>
+    );
 };

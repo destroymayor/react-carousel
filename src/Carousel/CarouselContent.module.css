@@ -7,7 +7,6 @@
   display: flex;
   height: 100%;
   width: 100%;
-  gap: 10px;
 }
 
 .wrapper-inner-vertical {
@@ -18,7 +17,7 @@
   flex-direction: row;
 }
 
-.wrapper-inner-transition {
+.carousel-transition {
   transition-property: transform;
   transition-duration: 300ms;
   transition-timing-function: ease-in-out;
