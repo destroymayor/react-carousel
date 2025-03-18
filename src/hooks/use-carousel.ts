@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { useCarouselStore } from './Provider';
-import useCarouselTimer from './useCarouselTimer';
-import { resetTransition } from './utils';
+import { useCarouselStore } from '../store/Provider';
+import useCarouselTimer from './use-carousel-timer';
+import { resetTransition } from '../utils';
 
-import useIntersectionObserver from './useIntersectionObserver';
+import useIntersectionObserver from './use-intersection-observer';
 
 const useCarousel = () => {
     const state = useCarouselStore((carouselState) => carouselState);

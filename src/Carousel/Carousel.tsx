@@ -1,5 +1,5 @@
-import CarouselProvider from './Provider';
-import { CarouselState } from './store';
+import CarouselProvider from '../store/Provider';
+import { CarouselState } from '../store/store';
 import CarouselContent from './CarouselContent';
 import CarouselItem from './CarouselItem';
 import CarouselPagination from './CarouselPagination';

@@ -1,8 +1,8 @@
 import { Children, useLayoutEffect } from 'react';
 
-import { useCarouselStore } from './Provider';
-import useCarousel from './useCarousel';
-import useSwipe from './useSwipe';
+import { useCarouselStore } from '../store/Provider';
+import useCarousel from '../hooks/use-carousel';
+import useSwipe from '../hooks/use-swipe';
 
 import STYLE from './CarouselContent.module.css';
 

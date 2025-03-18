@@ -1,5 +1,7 @@
 import Carousel from './Carousel';
 
+import useInView from './useInView';
+
 import STYLE from './App.module.css';
 
 const data = [
@@ -31,8 +33,11 @@ const data = [
 ];
 
 function App() {
+    const { ref , isInView} = useInView();
+
+    console.log({ isInView });
     return (
-        <div className={STYLE.wrapper}>
+        <div className={STYLE.wrapper} ref={ref}>
             <Carousel className={STYLE['carousel-container']}>
                 <Carousel.Content gap={10}>
                     {data.map((item) => (

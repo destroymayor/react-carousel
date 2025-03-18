@@ -1,4 +1,4 @@
-import { useCarouselStore } from './Provider';
+import { useCarouselStore } from '../store/Provider';
 
 type CarouselActionProps = {
     children?: React.ReactNode;
