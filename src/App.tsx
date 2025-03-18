@@ -1,7 +1,5 @@
 import Carousel from './carousel';
 
-import useInView from './useInView';
-
 import STYLE from './App.module.css';
 
 const data = [
@@ -33,11 +31,8 @@ const data = [
 ];
 
 function App() {
-    const { ref , isInView} = useInView();
-
-    console.log({ isInView });
     return (
-        <div className={STYLE.wrapper} ref={ref}>
+        <div className={STYLE.wrapper}>
             <Carousel className={STYLE['carousel-container']}>
                 <Carousel.Content gap={10}>
                     {data.map((item) => (
@@ -52,7 +47,7 @@ function App() {
                     ))}
                 </Carousel.Content>
                 <div className={STYLE['carousel-pagination-container']}>
-                    <Carousel.Pagination />
+                    <Carousel.Dots />
                 </div>
                 <div className={STYLE['carousel-actions-container']}>
                     <Carousel.Previous>
@@ -64,7 +59,7 @@ function App() {
                     <Carousel.Toggle></Carousel.Toggle>
                 </div>
             </Carousel>
-
+            {/* 
             <Carousel
                 className={STYLE['carousel-container-vertical']}
                 orientation="vertical"
@@ -84,7 +79,7 @@ function App() {
                     ))}
                 </Carousel.Content>
                 <div className={STYLE['carousel-pagination-container']}>
-                    <Carousel.Pagination />
+                    <Carousel.Dots />
                 </div>
                 <div className={STYLE['carousel-actions-container']}>
                     <Carousel.Previous>
@@ -95,7 +90,7 @@ function App() {
                     </Carousel.Next>
                     <Carousel.Toggle></Carousel.Toggle>
                 </div>
-            </Carousel>
+            </Carousel> */}
         </div>
     );
 }
