@@ -2,7 +2,7 @@ import CarouselProvider from '../store/Provider';
 import { CarouselState } from '../store/store';
 import CarouselContent from './carousel-content';
 import CarouselItem from './carousel-item';
-import CarouselPagination from './carousel-dots';
+import CarouselDots from './carousel-dots';
 import CarouselBars from './carousel-bars';
 import { CarouselNext, CarouselPrevious, CarouselToggle } from './carousel-actions';
 
@@ -27,9 +27,10 @@ const CarouselStoreProvider = (props: CarouselStoreProviderProps) => {
 
 CarouselStoreProvider.Content = CarouselContent;
 CarouselStoreProvider.Item = CarouselItem;
-CarouselStoreProvider.Pagination = CarouselPagination;
+CarouselStoreProvider.Dots = CarouselDots;
 CarouselStoreProvider.Bars = CarouselBars;
 CarouselStoreProvider.Next = CarouselNext;
 CarouselStoreProvider.Previous = CarouselPrevious;
 CarouselStoreProvider.Toggle = CarouselToggle;
+
 export default CarouselStoreProvider;

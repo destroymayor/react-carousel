@@ -1,5 +1,6 @@
 import { Children, useLayoutEffect } from 'react';
 
+import clsx from 'clsx';
 import { useCarouselStore } from '../store/Provider';
 import useCarousel from '../hooks/use-carousel';
 import useSwipe from '../hooks/use-swipe';
@@ -88,14 +89,14 @@ const CarouselContent = (props: CarouselContentProps) => {
         <div className={STYLE.wrapper} ref={containerRef}>
             <div
                 ref={carouselRef}
-                className={[
+                className={clsx(
                     STYLE['wrapper-inner'],
                     isHorizontal
                         ? STYLE['wrapper-inner-horizontal']
                         : STYLE['wrapper-inner-vertical'],
                     !isTransitioning ? STYLE['carousel-transition'] : '',
                     className,
-                ].join(' ')}
+                )}
                 style={
                     {
                         transform,

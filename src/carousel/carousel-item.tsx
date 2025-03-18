@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import STYLE from './carousel-item.module.css';
 
 type CarouselItemProps = {
@@ -12,7 +13,7 @@ const CarouselItem = (props: CarouselItemProps) => {
 
     return (
         <div
-            className={[STYLE['wrapper'], className].join(' ')}
+            className={clsx(STYLE['wrapper'], className)}
             style={{ flex: `0 0 ${width}%`, ...style }}
         >
             {children}

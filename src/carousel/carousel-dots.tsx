@@ -1,5 +1,5 @@
 import { useCarouselStore } from '../store/Provider';
-
+import clsx from 'clsx';
 import STYLE from './carousel-dots.module.css';
 
 type CarouselPaginationProps = {
@@ -12,17 +12,17 @@ const CarouselPagination = (props: CarouselPaginationProps) => {
     const { activeSlide, totalSlides } = useCarouselStore((state) => state);
 
     return (
-        <div className={[STYLE['wrapper'], className].join(' ')} style={style}>
+        <div className={clsx(STYLE['wrapper'], className)} style={style}>
             {Array.from({ length: totalSlides }).map((_, index) => {
                 const isActive = activeSlide - 1 === index;
 
                 return (
                     <div
                         key={index}
-                        className={[
+                        className={clsx(
                             STYLE['pagination-item'],
-                            isActive ? STYLE['pagination-item-active'] : '',
-                        ].join(' ')}
+                            isActive && STYLE['pagination-item-active'],
+                        )}
                     />
                 );
             })}

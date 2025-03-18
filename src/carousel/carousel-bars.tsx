@@ -1,5 +1,6 @@
-import { useCarouselStore } from '../store/Provider';
+import clsx from 'clsx';
 
+import { useCarouselStore } from '../store/Provider';
 import STYLE from './carousel-bars.module.css';
 
 type CarouselBarProps = {
@@ -14,10 +15,10 @@ const CarouselBar = (props: CarouselBarProps) => {
     return (
         <div className={STYLE['bar-item-wrapper']}>
             <div
-                className={[
+                className={clsx(
                     STYLE['bar-item-wrapper-inner'],
-                    active ? STYLE['bar-progress-animation'] : '',
-                ].join(' ')}
+                    active && STYLE['bar-progress-animation'],
+                )}
                 style={{
                     animationDuration: `${speed}ms`,
                     transform: completed ? 'translateX(0)' : 'translateX(-100%)',
@@ -34,7 +35,7 @@ const CarouselBars = (props: { className?: string }) => {
     const activeBar = activeSlide - 1;
 
     return (
-        <div className={[STYLE['bars-wrapper'], className].join(' ')}>
+        <div className={clsx(STYLE['bars-wrapper'], className)}>
             {Array.from({ length: totalSlides }).map((_, index) => (
                 <CarouselBar
                     key={index}
