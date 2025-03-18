@@ -1,6 +1,6 @@
 import { useCarouselStore } from '../store/Provider';
 
-import STYLE from './CarouselBars.module.css';
+import STYLE from './carousel-bars.module.css';
 
 type CarouselBarProps = {
     completed: boolean;

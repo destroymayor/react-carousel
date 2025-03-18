@@ -1,6 +1,6 @@
 import { useCarouselStore } from '../store/Provider';
 
-import STYLE from './CarouselPagination.module.css';
+import STYLE from './carousel-dots.module.css';
 
 type CarouselPaginationProps = {
     className?: string;

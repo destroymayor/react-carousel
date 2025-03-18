@@ -4,7 +4,7 @@ import { useCarouselStore } from '../store/Provider';
 import useCarousel from '../hooks/use-carousel';
 import useSwipe from '../hooks/use-swipe';
 
-import STYLE from './CarouselContent.module.css';
+import STYLE from './carousel-content.module.css';
 
 type CarouselContentProps = {
     children?: React.ReactNode;

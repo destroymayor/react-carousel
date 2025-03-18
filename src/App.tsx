@@ -1,4 +1,4 @@
-import Carousel from './Carouselx';
+import Carousel from './carousel';
 
 import useInView from './useInView';
 

@@ -1,4 +1,4 @@
-import STYLE from './CarouselItem.module.css';
+import STYLE from './carousel-item.module.css';
 
 type CarouselItemProps = {
     children?: React.ReactNode;

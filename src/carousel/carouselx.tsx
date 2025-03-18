@@ -1,10 +1,10 @@
 import CarouselProvider from '../store/Provider';
 import { CarouselState } from '../store/store';
-import CarouselContent from './CarouselContent';
-import CarouselItem from './CarouselItem';
-import CarouselPagination from './CarouselPagination';
-import CarouselBars from './CarouselBars';
-import { CarouselNext, CarouselPrevious, CarouselToggle } from './CarouselActions';
+import CarouselContent from './carousel-content';
+import CarouselItem from './carousel-item';
+import CarouselPagination from './carousel-dots';
+import CarouselBars from './carousel-bars';
+import { CarouselNext, CarouselPrevious, CarouselToggle } from './carousel-actions';
 
 type CarouselStoreProviderProps = {
     children: React.ReactNode;
