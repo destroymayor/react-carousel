@@ -51,23 +51,19 @@ const useCarousel = () => {
         if (isTransitioning) return;
 
         if (activeSlide === 0) {
-            const timer = setTimeout(() => {
+            resetTransition(() => {
                 setTransitioning(true);
                 setActiveSlide(totalSlides);
 
                 resetTransition(() => setTransitioning(false));
-            }, transitionDuration);
-
-            return () => clearTimeout(timer);
+            }, transitionDuration)
         } else if (activeSlide - 1 >= totalSlides) {
-            const timer = setTimeout(() => {
-                setTransitioning(true);
-                setActiveSlide(1);
+             resetTransition(() => {
+                 setTransitioning(true);
+                 setActiveSlide(1);
 
-                resetTransition(() => setTransitioning(false));
-            }, transitionDuration);
-
-            return () => clearTimeout(timer);
+                 resetTransition(() => setTransitioning(false));
+             }, transitionDuration);
         }
     }, [activeSlide, totalSlides]);
 

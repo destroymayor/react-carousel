@@ -1,7 +1,5 @@
 import { useCarouselStore } from '../store/Provider';
 
-import useThrottle from '../hooks/use-throttle';
-
 type CarouselActionProps = {
     children?: React.ReactNode;
 };
@@ -12,12 +10,10 @@ export const CarouselNext = (props: CarouselActionProps) => {
         (state) => state
     );
 
-    const throttleScrollNext = useThrottle(scrollNext, 500);
-
     const handleClick = () => {
         if (isTransitioning) return;
 
-        throttleScrollNext();
+        scrollNext();
     };
 
     return <div onClick={handleClick}>{children}</div>;
@@ -29,12 +25,10 @@ export const CarouselPrevious = (props: CarouselActionProps) => {
         (state) => state
     );
 
-    const throttleScrollPrev = useThrottle(scrollPrev, 500);
-
     const handleClick = () => {
         if (isTransitioning) return;
 
-        throttleScrollPrev();
+        scrollPrev();
     };
 
     return <div onClick={handleClick}>{children}</div>;
