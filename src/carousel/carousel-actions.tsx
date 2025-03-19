@@ -1,6 +1,6 @@
 import { useCarouselStore } from '../store/Provider';
 
-import useThrottle from '../hooks/useThrottle';
+import useThrottle from '../hooks/use-throttle';
 
 type CarouselActionProps = {
     children?: React.ReactNode;
