@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 type UseSwipeProps = {
     direction: 'horizontal' | 'vertical';
@@ -15,7 +15,6 @@ type SwipeTouchEvent = TouchEvent | React.TouchEvent;
 const useSwipe = (props: UseSwipeProps) => {
     const { enabled, direction, isDragging, setDragging, onSwipeLeft, onSwipeRight } =
         props;
-    const ref = useRef<HTMLDivElement>(null);
     const [swipeingTranslate, setSwipeingTranslate] = useState(0);
     const [startX, setStartX] = useState(0);
     const [startY, setStartY] = useState(0);
@@ -74,7 +73,6 @@ const useSwipe = (props: UseSwipeProps) => {
     };
 
     return {
-        ref,
         swipeingTranslate,
         direction,
         handlers: {

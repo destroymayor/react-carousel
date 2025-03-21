@@ -1,24 +1,23 @@
 import { createStore } from 'zustand';
 
 export type CarouselState = {
+    isSettled: boolean;
     isPlaying: boolean;
     isActing: boolean;
     isDragging: boolean;
     isTransitioning: boolean;
-    autoPlay: boolean;
     speed: number;
     swipeable: boolean;
     totalSlides: number;
     activeSlide: number;
     transitionDuration: number;
     orientation: 'vertical' | 'horizontal';
+    setSettled: (isSettled: boolean) => void;
     setActiveSlide: (activeSlide: number) => void;
     setTotalSlides: (totalSlides: number) => void;
     setDragging: (isDragging: boolean) => void;
     setActing: (isActing: boolean) => void;
     setTransitioning: (isTransitioning: boolean) => void;
-    setAutoPlay: (autoPlay: boolean) => void;
-    toggleAutoPlay: () => void;
     togglePlay: () => void;
     scrollNext: () => void;
     scrollPrev: () => void;
@@ -29,13 +28,13 @@ export type CarouselState = {
 const createCarouselStore = (initialState?: Partial<CarouselState>) =>
     createStore<CarouselState>((set, get) => ({
         // state
+        isSettled: false,
         isPlaying: true,
         isActing: false,
         isDragging: false,
         isTransitioning: false,
         swipeable: true,
-        speed: 1000,
-        autoPlay: true,
+        speed: 3000,
         totalSlides: 0,
         activeSlide: 1,
         transitionDuration: 300,
@@ -43,12 +42,12 @@ const createCarouselStore = (initialState?: Partial<CarouselState>) =>
         ...initialState,
 
         // mutations
+        setSettled: (isSettled) => set({ isSettled }),
         setActiveSlide: (activeSlide) => set({ activeSlide }),
         setTotalSlides: (totalSlides) => set({ totalSlides }),
         setDragging: (isDragging) => set({ isDragging }),
         setActing: (isActing) => set({ isActing }),
         setTransitioning: (isTransitioning) => set({ isTransitioning }),
-        setAutoPlay: (autoPlay) => set({ autoPlay }),
         scrollNext: () => {
             const { isTransitioning } = get();
 
@@ -70,7 +69,6 @@ const createCarouselStore = (initialState?: Partial<CarouselState>) =>
             }));
         },
         togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
-        toggleAutoPlay: () => set((state) => ({ autoPlay: !state.autoPlay })),
         playSlide: () => set({ isPlaying: true }),
         pauseSlide: () => set({ isPlaying: false }),
     }));

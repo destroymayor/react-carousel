@@ -11,8 +11,9 @@ type CarouselStoreProviderProps = {
     className?: string;
     orientation?: CarouselState['orientation'];
     swipeable?: CarouselState['swipeable'];
-    autoPlay?: CarouselState['autoPlay'];
+    autoPlay?: CarouselState['isPlaying'];
     speed?: CarouselState['speed'];
+    totalSlides?: CarouselState['totalSlides'];
 };
 
 const CarouselStoreProvider = (props: CarouselStoreProviderProps) => {

@@ -48,6 +48,7 @@ function App() {
                 </Carousel.Content>
                 <div className={STYLE['carousel-pagination-container']}>
                     <Carousel.Dots />
+                    <Carousel.Bars />
                 </div>
                 <div className={STYLE['carousel-actions-container']}>
                     <Carousel.Previous>

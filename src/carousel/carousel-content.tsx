@@ -1,4 +1,4 @@
-import { Children, useLayoutEffect } from 'react';
+import { Children, useLayoutEffect, useEffect, useRef } from 'react';
 
 import clsx from 'clsx';
 import { useCarouselStore } from '../store/Provider';
@@ -39,6 +39,7 @@ const CarouselContent = (props: CarouselContentProps) => {
         activeSlide,
         totalSlides,
         orientation,
+        transitionDuration,
         scrollNext,
         scrollPrev,
         setDragging,
@@ -46,12 +47,8 @@ const CarouselContent = (props: CarouselContentProps) => {
     } = useCarouselStore((state) => state);
 
     const { containerRef } = useCarousel();
-
-    const {
-        ref: carouselRef,
-        swipeingTranslate,
-        handlers: swipeHandlers,
-    } = useSwipe({
+    const carouselRef = useRef<HTMLDivElement>(null);
+    const { swipeingTranslate, handlers: swipeHandlers } = useSwipe({
         direction: orientation,
         enabled: swipeable,
         isDragging,
@@ -69,24 +66,52 @@ const CarouselContent = (props: CarouselContentProps) => {
     const slideHeight = carouselRef.current?.children[0].clientHeight || 0;
 
     const isHorizontal = orientation === 'horizontal';
-    const translateValue = calculateTranslateX({
-        containerSize: isHorizontal
-            ? carouselRoot?.offsetWidth
-            : carouselRoot?.offsetHeight,
-        slideSize: isHorizontal ? slideWidth : slideHeight,
+
+    useEffect(() => {
+        if (carouselRef.current) {
+            const translateValue = calculateTranslateX({
+                containerSize: isHorizontal
+                    ? carouselRoot?.offsetWidth
+                    : carouselRoot?.offsetHeight,
+                slideSize: isHorizontal ? slideWidth : slideHeight,
+                activeSlide,
+                gap,
+            });
+
+            const transform = isHorizontal
+                ? `translateX(${translateValue}) translateX(${swipeingTranslate}px)`
+                : `translateY(${translateValue}) translateY(${swipeingTranslate}px)`;
+            carouselRef.current.style.transform = transform;
+            carouselRef.current.style.gap = `${gap}px`;
+            carouselRef.current.style.transition = !isTransitioning
+                ? `transform ${transitionDuration}ms ease-in-out`
+                : 'none';
+
+            if (isHorizontal) {
+                carouselRef.current.style.width = `${carouselRoot?.offsetWidth}px`;
+            } else {
+                carouselRef.current.style.height = `${carouselRoot?.offsetHeight}px`;
+            }
+        }
+    }, [
         activeSlide,
         gap,
-    });
-
-    const transform = isHorizontal
-        ? `translateX(${translateValue}) translateX(${swipeingTranslate}px)`
-        : `translateY(${translateValue}) translateY(${swipeingTranslate}px)`;
+        isHorizontal,
+        orientation,
+        swipeingTranslate,
+        transitionDuration,
+        isTransitioning,
+    ]);
 
     const clonedFirstChild = Children.toArray(children)[0];
     const clonedLastChild = Children.toArray(children)[totalSlides - 1];
 
     return (
-        <div className={STYLE.wrapper} ref={containerRef}>
+        <div
+            className={STYLE.wrapper}
+            ref={containerRef}
+            style={{ visibility: carouselRef.current ? 'visible' : 'hidden' }}
+        >
             <div
                 ref={carouselRef}
                 className={clsx(
@@ -94,19 +119,9 @@ const CarouselContent = (props: CarouselContentProps) => {
                     isHorizontal
                         ? STYLE['wrapper-inner-horizontal']
                         : STYLE['wrapper-inner-vertical'],
-                    !isTransitioning ? STYLE['carousel-transition'] : '',
-                    className,
+                    className
                 )}
-                style={
-                    {
-                        transform,
-                        gap,
-                        ...(isHorizontal
-                            ? { width: carouselRoot?.offsetWidth }
-                            : { height: carouselRoot?.offsetHeight }),
-                        ...style,
-                    } as React.CSSProperties
-                }
+                style={style as React.CSSProperties}
                 {...swipeHandlers}
             >
                 {clonedLastChild}

@@ -21,7 +21,7 @@ const CarouselBar = (props: CarouselBarProps) => {
                 )}
                 style={{
                     animationDuration: `${speed}ms`,
-                    transform: completed ? 'translateX(0)' : 'translateX(-100%)',
+                    transform: completed ? 'translateX(0%)' : 'translateX(-101%)',
                 }}
             />
         </div>

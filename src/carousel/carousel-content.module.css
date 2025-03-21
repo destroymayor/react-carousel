@@ -16,11 +16,3 @@
 .wrapper-inner-horizontal {
   flex-direction: row;
 }
-
-.carousel-transition {
-  transition-property: transform;
-  transition-duration: 300ms;
-  transition-timing-function: ease-in-out;
-}
-
-

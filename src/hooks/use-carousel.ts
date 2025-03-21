@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useCarouselStore } from '../store/Provider';
 import useCarouselTimer from './use-carousel-timer';
 import { resetTransition } from '../utils';
@@ -16,36 +16,47 @@ const useCarousel = () => {
         totalSlides,
         activeSlide,
         speed,
-        autoPlay,
         transitionDuration,
         scrollNext,
         playSlide,
         pauseSlide,
         setActiveSlide,
         setTransitioning,
-        setAutoPlay,
         setActing,
     } = state;
 
-    const { resetTimer, pauseTimer } = useCarouselTimer({
+    const containerRef = useRef(null);
+
+    const { timerRef, startTimer, pauseTimer } = useCarouselTimer({
         callback: scrollNext,
         speed,
     });
 
-    const { containerRef, isIntersecting } = useIntersectionObserver({
-        dependencies: [autoPlay],
+    const { isIntersecting } = useIntersectionObserver({
+        ref: containerRef,
         options: { threshold: 0.5 },
     });
 
     useEffect(() => {
+        if (isActing) {
+            pauseTimer();
+            setActing(false);
+            return;
+        }
+
         if (isIntersecting) {
-            setAutoPlay(true);
-            playSlide();
+            if (!isPlaying &&!isDragging && !isTransitioning) {
+                scrollNext();
+                playSlide();
+                startTimer();
+            } else if (!timerRef.current) {
+                startTimer();
+            }
         } else {
-            setAutoPlay(false);
+            pauseTimer();
             pauseSlide();
         }
-    }, [isIntersecting]);
+    }, [isIntersecting, isActing, isPlaying, isDragging, isTransitioning]);
 
     useEffect(() => {
         if (isTransitioning) return;
@@ -56,34 +67,16 @@ const useCarousel = () => {
                 setActiveSlide(totalSlides);
 
                 resetTransition(() => setTransitioning(false));
-            }, transitionDuration)
+            }, transitionDuration);
         } else if (activeSlide - 1 >= totalSlides) {
-             resetTransition(() => {
-                 setTransitioning(true);
-                 setActiveSlide(1);
+            resetTransition(() => {
+                setTransitioning(true);
+                setActiveSlide(1);
 
-                 resetTransition(() => setTransitioning(false));
-             }, transitionDuration);
+                resetTransition(() => setTransitioning(false));
+            }, transitionDuration);
         }
     }, [activeSlide, totalSlides]);
-
-    useEffect(() => {
-        if (isActing) {
-            pauseTimer();
-            setActing(false);
-            return;
-        }
-
-        if (!autoPlay) {
-            pauseTimer();
-            playSlide();
-            return;
-        }
-
-        if (autoPlay && isPlaying && !isDragging && !isTransitioning) {
-            resetTimer();
-        }
-    }, [isActing, autoPlay, isDragging, isTransitioning, isPlaying]);
 
     return { containerRef };
 };
