@@ -1,4 +1,4 @@
-import Carousel from './carousel';
+import Carousel from '../packages/carousel';
 
 import STYLE from './App.module.css';
 
