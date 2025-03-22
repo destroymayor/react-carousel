@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useCarouselStore } from '../store/Provider';
 import useCarouselTimer from './use-carousel-timer';
-import { resetTransition } from '../utils';
+import { executeWithDelay } from '../utils';
 
 import useIntersectionObserver from './use-intersection-observer';
 
@@ -25,15 +25,12 @@ const useCarousel = () => {
         setActing,
     } = state;
 
-    const containerRef = useRef(null);
-
     const { timerRef, startTimer, pauseTimer } = useCarouselTimer({
         callback: scrollNext,
         speed,
     });
 
-    const { isIntersecting } = useIntersectionObserver({
-        ref: containerRef,
+    const { targetRef: containerRef, isIntersecting } = useIntersectionObserver({
         options: { threshold: 0.5 },
     });
 
@@ -44,8 +41,14 @@ const useCarousel = () => {
             return;
         }
 
+        if (!isPlaying) {
+            pauseTimer();
+            pauseSlide();
+            return;
+        }
+
         if (isIntersecting) {
-            if (!isPlaying &&!isDragging && !isTransitioning) {
+            if (!isPlaying && !isDragging && !isTransitioning) {
                 scrollNext();
                 playSlide();
                 startTimer();
@@ -61,20 +64,26 @@ const useCarousel = () => {
     useEffect(() => {
         if (isTransitioning) return;
 
+        const slideTransition = async (nextSlide: number) => {
+            try {
+                await executeWithDelay(() => {
+                    setTransitioning(true);
+                    setActiveSlide(nextSlide);
+                }, transitionDuration);
+
+                await executeWithDelay(() => {
+                    setTransitioning(false);
+                }, 10);
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        };
+
         if (activeSlide === 0) {
-            resetTransition(() => {
-                setTransitioning(true);
-                setActiveSlide(totalSlides);
-
-                resetTransition(() => setTransitioning(false));
-            }, transitionDuration);
+            slideTransition(totalSlides);
         } else if (activeSlide - 1 >= totalSlides) {
-            resetTransition(() => {
-                setTransitioning(true);
-                setActiveSlide(1);
-
-                resetTransition(() => setTransitioning(false));
-            }, transitionDuration);
+            slideTransition(1);
         }
     }, [activeSlide, totalSlides]);
 

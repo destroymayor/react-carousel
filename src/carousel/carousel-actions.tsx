@@ -36,10 +36,18 @@ export const CarouselPrevious = (props: CarouselActionProps) => {
 
 export const CarouselToggle = (props: CarouselActionProps) => {
     const { children } = props;
-    const { isPlaying, togglePlay } = useCarouselStore((state) => state);
+    const { isPlaying, togglePlay, scrollNext } = useCarouselStore((state) => state);
+
+    const handleClick = () => {
+        if (!isPlaying) {
+            scrollNext();
+        }
+
+        togglePlay();
+    };
 
     return (
-        <button onClick={togglePlay}>
+        <button onClick={handleClick}>
             {isPlaying ? 'Pause' : 'Play'} {children}
         </button>
     );

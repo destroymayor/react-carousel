@@ -2,13 +2,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 4px;
 }
 
 .bar-item-wrapper {
   position: relative;
   height: 4px;
-  flex: 1;
+  width: 100%;
   overflow: hidden;
   border-radius: 2px;
   background-color: #e2e8f0;
@@ -28,9 +28,9 @@
 
 @keyframes progress {
   from {
-    transform: translateX(-100%);
+    width: 0%;
   }
   to {
-    transform: translateX(0%);
+    width: 100%;
   }
 }

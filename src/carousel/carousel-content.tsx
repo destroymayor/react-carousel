@@ -59,7 +59,7 @@ const CarouselContent = (props: CarouselContentProps) => {
 
     useLayoutEffect(() => {
         setTotalSlides(Children.count(children));
-    }, [children]);
+    }, []);
 
     const carouselRoot = carouselRef.current?.parentNode?.parentElement;
     const slideWidth = carouselRef.current?.children[0].clientWidth || 0;
@@ -67,42 +67,19 @@ const CarouselContent = (props: CarouselContentProps) => {
 
     const isHorizontal = orientation === 'horizontal';
 
-    useEffect(() => {
-        if (carouselRef.current) {
-            const translateValue = calculateTranslateX({
-                containerSize: isHorizontal
-                    ? carouselRoot?.offsetWidth
-                    : carouselRoot?.offsetHeight,
-                slideSize: isHorizontal ? slideWidth : slideHeight,
-                activeSlide,
-                gap,
-            });
-
-            const transform = isHorizontal
-                ? `translateX(${translateValue}) translateX(${swipeingTranslate}px)`
-                : `translateY(${translateValue}) translateY(${swipeingTranslate}px)`;
-            carouselRef.current.style.transform = transform;
-            carouselRef.current.style.gap = `${gap}px`;
-            carouselRef.current.style.transition = !isTransitioning
-                ? `transform ${transitionDuration}ms ease-in-out`
-                : 'none';
-
-            if (isHorizontal) {
-                carouselRef.current.style.width = `${carouselRoot?.offsetWidth}px`;
-            } else {
-                carouselRef.current.style.height = `${carouselRoot?.offsetHeight}px`;
-            }
-        }
-    }, [
+    const translateValue = calculateTranslateX({
+        containerSize: isHorizontal
+            ? carouselRoot?.offsetWidth
+            : carouselRoot?.offsetHeight,
+        slideSize: isHorizontal ? slideWidth : slideHeight,
         activeSlide,
         gap,
-        isHorizontal,
-        orientation,
-        swipeingTranslate,
-        transitionDuration,
-        isTransitioning,
-    ]);
+    });
 
+    const transform = isHorizontal
+        ? `translateX(${translateValue}) translateX(${swipeingTranslate}px)`
+        : `translateY(${translateValue}) translateY(${swipeingTranslate}px)`;
+    
     const clonedFirstChild = Children.toArray(children)[0];
     const clonedLastChild = Children.toArray(children)[totalSlides - 1];
 
@@ -121,7 +98,19 @@ const CarouselContent = (props: CarouselContentProps) => {
                         : STYLE['wrapper-inner-vertical'],
                     className
                 )}
-                style={style as React.CSSProperties}
+                style={
+                    {
+                        gap,
+                        transform,
+                        transition: !isTransitioning
+                            ? `transform ${transitionDuration}ms ease-in-out`
+                            : 'none',
+                        ...(isHorizontal
+                            ? { width: `${carouselRoot?.offsetWidth}px` }
+                            : { height: `${carouselRoot?.offsetHeight}px` }),
+                        ...style,
+                    } as React.CSSProperties
+                }
                 {...swipeHandlers}
             >
                 {clonedLastChild}

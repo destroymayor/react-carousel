@@ -1,10 +1,12 @@
-export const resetTransition = (callback: () => void, duration?: number) => {
-    const durationValue = duration || 10;
-
-    return new Promise((resolve) => {
-       return setTimeout(() => {
-            resolve(true);
-            callback();
-        }, durationValue);
-    });
-};
+export const executeWithDelay = async (
+    callback: () => void,
+    delayMs: number = 10
+) => {
+    try {
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+        callback();
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}

@@ -17,11 +17,12 @@ const CarouselBar = (props: CarouselBarProps) => {
             <div
                 className={clsx(
                     STYLE['bar-item-wrapper-inner'],
-                    active && STYLE['bar-progress-animation'],
+                    active && STYLE['bar-progress-animation']
                 )}
                 style={{
                     animationDuration: `${speed}ms`,
-                    transform: completed ? 'translateX(0%)' : 'translateX(-101%)',
+                    width: completed ? '100%' : '0%',
+                    transition: active ? 'width 0.3s ease-in-out' : 'none',
                 }}
             />
         </div>
