@@ -9,7 +9,6 @@
 
         /* Bundler mode */
         "moduleResolution": "bundler",
-        "allowImportingTsExtensions": true,
         "isolatedModules": true,
         "moduleDetection": "force",
         "noEmit": true,
@@ -21,13 +20,19 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
+        "allowImportingTsExtensions": true,
+        "declaration": true,
+        "declarationDir": "./dist/types",
+        "emitDeclarationOnly": false,
 
         /* Resolve paths */
         "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"],
             "@/packages/*": ["./packages/*"]
-        }
+        },
+
+        "typeRoots": ["./node_modules/@types", "./dist/types"]
     },
-    "include": ["src", "packages"]
+    "include": ["src", "packages", "packages/carousel/index.ts"]
 }

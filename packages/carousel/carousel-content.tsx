@@ -1,4 +1,4 @@
-import { Children, useLayoutEffect, useEffect, useRef } from 'react';
+import { Children, useLayoutEffect, useRef } from 'react';
 
 import clsx from 'clsx';
 import { useCarouselStore } from '../store/Provider';
